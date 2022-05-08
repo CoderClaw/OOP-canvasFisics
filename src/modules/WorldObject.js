@@ -32,34 +32,34 @@ export default function World(gravity,friction){
     }
     
     this.boundaries = function (item) {
-        if(item.x + item.xDimension + item.dx >= this.innerWidth 
+        if(item.x + item.xDimension + item.velocity.x >= this.innerWidth 
             || 
-            item.x - item.xDimension + item.dx <= 0){
-             item.dx *= -1 * this.friction
-             item.dy *= 1 * 0.95
+            item.x - item.xDimension + item.velocity.x <= 0){
+             item.velocity.x *= -1 * this.friction
+             item.velocity.y *= 1 * 0.95
             }
 
-        if(item.y + item.yDimension + item.dy >= this.innerHeight 
+        if(item.y + item.yDimension + item.velocity.y >= this.innerHeight 
             || 
-            item.y - item.yDimension + item.dy <= 0  ) {
-              item.dy *= -1 * this.friction
-              item.dx *= 1 * 0.95
+            item.y - item.yDimension + item.velocity.y <= 0  ) {
+              item.velocity.y *= -1 * this.friction
+              item.velocity.x *= 1 * 0.95
             }
     }
 
     this.applyGravity = function (item){
         switch(this.gravityDirection){
             case "right":
-                if(item.x + item.xDimension + item.dx < this.innerWidth)item.dx+=this.gravity
+                if(item.x + item.xDimension + item.velocity.x < this.innerWidth)item.velocity.x+=this.gravity
                 break
             case "down":
-                if(item.y + item.yDimension + item.dy < this.innerHeight)item.dy+=this.gravity
+                if(item.y + item.yDimension + item.velocity.y < this.innerHeight)item.velocity.y+=this.gravity
                 break
             case "up":
-                if(item.y - item.yDimension + item.dy > 0)item.dy-=this.gravity
+                if(item.y - item.yDimension + item.velocity.y > 0)item.velocity.y-=this.gravity
                 break
             case "left":
-                if(item.x - item.xDimension + item.dx > 0)item.dx-=this.gravity
+                if(item.x - item.xDimension + item.velocity.x > 0)item.velocity.x-=this.gravity
                 break
             default:
                 //no gravity
@@ -68,11 +68,11 @@ export default function World(gravity,friction){
         
     }
 
-    this.animate =  (arr,sensors) => {
-        requestAnimationFrame(()=>this.animate(arr,sensors))
+    this.animate =  (arr) => {
+        requestAnimationFrame(()=>this.animate(arr))
         this.c.clearRect(0,0,this.innerWidth,this.innerHeight)
-        sensors.forEach(item=>item.draw())
-        arr.forEach(item=>item.update())
+        arr.forEach((item)=>{
+            item.update(arr)})
     }
 
     

@@ -1,14 +1,17 @@
 
-export default function Entity(x,y,dx,dy){
+export default function Entity(x,y,dx,dy,mass){
 
     this.x = x;
     this.y = y;
-    this.dx = dx;
-    this.dy = dy;
+    this.velocity = {
+        x: dx,
+        y: dy
+    }
+    this.mass = mass
 
     this.move = function (){
-        this.x += this.dx;
-        this.y += this.dy;
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
         
     }
 }
